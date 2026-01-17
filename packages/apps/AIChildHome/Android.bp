@@ -1,0 +1,49 @@
+# AI Child Home - Android.bp
+# Blueprint file for building AIChildHome as a privileged system app
+
+android_app {
+    name: "AIChildHome",
+    
+    srcs: ["src/**/*.java"],
+    
+    resource_dirs: ["res"],
+    
+    manifest: "AndroidManifest.xml",
+    
+    // Build as privileged system app
+    privileged: true,
+    
+    // Sign with platform key for system permissions
+    certificate: "platform",
+    
+    // Required for system-level access
+    platform_apis: true,
+    
+    // Optimize for speed
+    optimize: {
+        enabled: true,
+        proguard_flags_files: ["proguard.flags"],
+    },
+    
+    // Static libraries
+    static_libs: [
+        "androidx.core_core",
+        "androidx.appcompat_appcompat",
+    ],
+    
+    // Make it a priv-app
+    required: [
+        "privapp_whitelist_com.aichild.home",
+    ],
+}
+
+// Privileged permissions whitelist
+prebuilt_etc {
+    name: "privapp_whitelist_com.aichild.home",
+    
+    src: "privapp-permissions-aichild.xml",
+    
+    sub_dir: "permissions",
+    
+    filename_from_src: true,
+}

@@ -1,0 +1,42 @@
+--- BEGIN PATCH ---
+Description: Add AI Child Service to SystemServer
+File: frameworks/base/services/java/com/android/server/SystemServer.java
+
+This patch adds the AI Child Service startup to the Android system server.
+Apply this patch to your LineageOS source tree.
+
+--- a/frameworks/base/services/java/com/android/server/SystemServer.java
++++ b/frameworks/base/services/java/com/android/server/SystemServer.java
+@@ -100,6 +100,7 @@
+ import com.android.server.trust.TrustManagerService;
+ import com.android.server.tv.TvInputManagerService;
+ import com.android.server.uri.UriGrantsManagerService;
++import com.android.server.aichild.AIChildService;
+ 
+ import dalvik.system.VMRuntime;
+ 
+@@ -1500,6 +1501,16 @@ public final class SystemServer {
+             }
+             t.traceEnd();
+ 
++            // AI Child Service - The AI child that lives in the phone
++            t.traceBegin("StartAIChildService");
++            try {
++                Slog.i(TAG, "Starting AI Child Service - Your AI child is waking up!");
++                mSystemServiceManager.startService(AIChildService.class);
++            } catch (Throwable e) {
++                Slog.e(TAG, "Failed to start AI Child Service", e);
++            }
++            t.traceEnd();
++
+             // End of essential services
+             t.traceBegin("MakeVibratorServiceReady");
+             try {
+
+--- END PATCH ---
+
+To apply this patch:
+1. Navigate to your LineageOS source directory
+2. Run: patch -p1 < framework_base.patch
+
+Or manually add the import and service startup code to SystemServer.java

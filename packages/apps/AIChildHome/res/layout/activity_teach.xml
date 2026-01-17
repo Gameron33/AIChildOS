@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Teach Activity Layout
+  Interface for teaching the AI child
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#1a1a2e"
+    android:padding="24dp">
+
+    <!-- Header -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="📚 Teach Your Child"
+        android:textColor="#F8FAFC"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="24dp" />
+
+    <!-- Category Selection -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="What do you want to teach?"
+        android:textColor="#94A3B8"
+        android:textSize="14sp"
+        android:layout_marginBottom="12dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="24dp">
+
+        <TextView
+            android:id="@+id/category_words"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="📝 Words"
+            android:textColor="#F8FAFC"
+            android:background="@drawable/action_button_bg"
+            android:padding="12dp"
+            android:layout_margin="4dp" />
+
+        <TextView
+            android:id="@+id/category_objects"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🧸 Objects"
+            android:textColor="#F8FAFC"
+            android:background="@drawable/action_button_bg"
+            android:padding="12dp"
+            android:layout_margin="4dp" />
+
+        <TextView
+            android:id="@+id/category_emotions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="😊 Emotions"
+            android:textColor="#F8FAFC"
+            android:background="@drawable/action_button_bg"
+            android:padding="12dp"
+            android:layout_margin="4dp" />
+
+        <TextView
+            android:id="@+id/category_custom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="✨ Custom"
+            android:textColor="#F8FAFC"
+            android:background="@drawable/action_button_bg"
+            android:padding="12dp"
+            android:layout_margin="4dp" />
+
+    </LinearLayout>
+
+    <!-- Word Input -->
+    <EditText
+        android:id="@+id/word_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter a word..."
+        android:textColor="#F8FAFC"
+        android:textColorHint="#64748B"
+        android:background="@drawable/input_background"
+        android:padding="16dp"
+        android:layout_marginBottom="16dp"
+        android:inputType="text" />
+
+    <!-- Meaning Input -->
+    <EditText
+        android:id="@+id/meaning_input"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:hint="What does it mean?"
+        android:textColor="#F8FAFC"
+        android:textColorHint="#64748B"
+        android:background="@drawable/input_background"
+        android:padding="16dp"
+        android:gravity="top"
+        android:layout_marginBottom="24dp"
+        android:inputType="textMultiLine" />
+
+    <!-- Feedback -->
+    <TextView
+        android:id="@+id/feedback_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="#34D399"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:layout_marginBottom="24dp"
+        android:visibility="gone" />
+
+    <!-- Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/cancel_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cancel"
+            android:textColor="#94A3B8"
+            android:background="@drawable/button_secondary"
+            android:layout_marginEnd="8dp" />
+
+        <Button
+            android:id="@+id/teach_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Teach! 📚"
+            android:textColor="#F8FAFC"
+            android:background="@drawable/button_primary"
+            android:layout_marginStart="8dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

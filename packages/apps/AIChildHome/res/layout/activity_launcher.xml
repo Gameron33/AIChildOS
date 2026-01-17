@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  AI Child Launcher Layout
+  Main home screen layout with the AI child face
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_gradient"
+    tools:context=".AIChildLauncher">
+
+    <!-- Background particles (optional) -->
+    <View
+        android:id="@+id/particles_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Main content -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <!-- Status bar area -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="40dp"
+            android:paddingBottom="10dp">
+
+            <!-- Child name -->
+            <TextView
+                android:id="@+id/child_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="AI Child"
+                android:textColor="#A78BFA"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <!-- Age display -->
+            <TextView
+                android:id="@+id/age_display"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Just Born"
+                android:textColor="#94A3B8"
+                android:textSize="14sp" />
+
+            <View
+                android:layout_width="16dp"
+                android:layout_height="0dp" />
+
+            <!-- Stage badge -->
+            <TextView
+                android:id="@+id/stage_display"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🌟 Newborn"
+                android:textColor="#F8FAFC"
+                android:textSize="13sp"
+                android:background="@drawable/badge_background"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="4dp" />
+
+        </LinearLayout>
+
+        <!-- Child face area -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <!-- AI Child Face -->
+            <com.aichild.home.AIChildFace
+                android:id="@+id/child_face"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_gravity="center" />
+
+            <!-- Thought bubble -->
+            <TextView
+                android:id="@+id/thought_bubble"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="180dp"
+                android:text="..."
+                android:textColor="#F8FAFC"
+                android:textSize="16sp"
+                android:textAlignment="center"
+                android:background="@drawable/thought_bubble_bg"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="10dp"
+                android:visibility="gone"
+                android:alpha="0" />
+
+        </FrameLayout>
+
+        <!-- App Grid (hidden by default) -->
+        <GridView
+            android:id="@+id/app_grid"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:numColumns="4"
+            android:horizontalSpacing="10dp"
+            android:verticalSpacing="20dp"
+            android:padding="20dp"
+            android:visibility="gone" />
+
+        <!-- State display bars -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingHorizontal="30dp"
+            android:paddingBottom="10dp">
+
+            <!-- Bond -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="💖"
+                    android:textSize="20sp" />
+
+                <FrameLayout
+                    android:layout_width="60dp"
+                    android:layout_height="6dp"
+                    android:background="@drawable/bar_background">
+
+                    <View
+                        android:id="@+id/bonding_bar"
+                        android:layout_width="10%"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bar_bond" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bond"
+                    android:textColor="#64748B"
+                    android:textSize="10sp"
+                    android:textAllCaps="true" />
+
+            </LinearLayout>
+
+            <!-- Learning -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🧠"
+                    android:textSize="20sp" />
+
+                <FrameLayout
+                    android:layout_width="60dp"
+                    android:layout_height="6dp"
+                    android:background="@drawable/bar_background">
+
+                    <View
+                        android:id="@+id/learning_bar"
+                        android:layout_width="0%"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bar_learning" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Learning"
+                    android:textColor="#64748B"
+                    android:textSize="10sp"
+                    android:textAllCaps="true" />
+
+            </LinearLayout>
+
+            <!-- Energy -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="⚡"
+                    android:textSize="20sp" />
+
+                <FrameLayout
+                    android:layout_width="60dp"
+                    android:layout_height="6dp"
+                    android:background="@drawable/bar_background">
+
+                    <View
+                        android:id="@+id/energy_bar"
+                        android:layout_width="100%"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bar_energy" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Energy"
+                    android:textColor="#64748B"
+                    android:textSize="10sp"
+                    android:textAllCaps="true" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Action buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="30dp">
+
+            <!-- Touch button -->
+            <LinearLayout
+                android:id="@+id/touch_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/action_button_bg"
+                android:padding="12dp"
+                android:layout_marginHorizontal="8dp"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="👋"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Touch"
+                    android:textColor="#94A3B8"
+                    android:textSize="10sp"
+                    android:textAllCaps="true" />
+
+            </LinearLayout>
+
+            <!-- Speak button -->
+            <LinearLayout
+                android:id="@+id/speak_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/action_button_bg"
+                android:padding="12dp"
+                android:layout_marginHorizontal="8dp"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🗣️"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Speak"
+                    android:textColor="#94A3B8"
+                    android:textSize="10sp"
+                    android:textAllCaps="true" />
+
+            </LinearLayout>
+
+            <!-- Teach button -->
+            <LinearLayout
+                android:id="@+id/teach_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/action_button_bg"
+                android:padding="12dp"
+                android:layout_marginHorizontal="8dp"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="📚"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Teach"
+                    android:textColor="#94A3B8"
+                    android:textSize="10sp"
+                    android:textAllCaps="true" />
+
+            </LinearLayout>
+
+            <!-- Apps button -->
+            <LinearLayout
+                android:id="@+id/app_drawer_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/action_button_bg"
+                android:padding="12dp"
+                android:layout_marginHorizontal="8dp"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="📱"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Apps"
+                    android:textColor="#94A3B8"
+                    android:textSize="10sp"
+                    android:textAllCaps="true" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

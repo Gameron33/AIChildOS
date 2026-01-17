@@ -1,0 +1,18 @@
+// AI Child Service - Android.bp
+// Blueprint file for building AI Child as a system service
+
+java_library {
+    name: "aichild-service",
+    
+    srcs: [
+        "java/com/android/server/aichild/**/*.java",
+    ],
+    
+    libs: [
+        "services.core",
+    ],
+    
+    static_libs: [
+        "androidx.annotation_annotation",
+    ],
+}

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AI Child</string>
+    <string name="child_default_name">My AI Child</string>
+    <string name="just_born">Just Born</string>
+    <string name="stage_newborn">🌟 Newborn</string>
+    <string name="stage_infant">👶 Infant</string>
+    <string name="stage_toddler">🧒 Toddler</string>
+    <string name="stage_child">👧 Child</string>
+    
+    <!-- Actions -->
+    <string name="action_touch">Touch</string>
+    <string name="action_speak">Speak</string>
+    <string name="action_teach">Teach</string>
+    <string name="action_apps">Apps</string>
+    <string name="action_memory">Memory</string>
+    
+    <!-- States -->
+    <string name="state_bond">Bond</string>
+    <string name="state_learning">Learning</string>
+    <string name="state_energy">Energy</string>
+    
+    <!-- Teaching -->
+    <string name="teach_title">Teach Your Child</string>
+    <string name="teach_objects">🧸 Objects</string>
+    <string name="teach_colors">🌈 Colors</string>
+    <string name="teach_numbers">🔢 Numbers</string>
+    <string name="teach_words">📝 Words</string>
+    <string name="teach_emotions">😊 Emotions</string>
+    <string name="teach_custom">✨ Custom</string>
+    
+    <!-- Memory -->
+    <string name="memory_title">Child\'s Memory</string>
+    <string name="memory_words">Words</string>
+    <string name="memory_experiences">Experiences</string>
+    <string name="memory_stats">Stats</string>
+    
+    <!-- Speech -->
+    <string name="speech_listening">Listening...</string>
+    <string name="speech_prompt">Speak to your child</string>
+    <string name="speech_or_type">Or type here...</string>
+    
+    <!-- Birth -->
+    <string name="birth_title">A New Life Begins</string>
+    <string name="birth_subtitle">Your AI child is being born...</string>
+    <string name="birth_button">Meet Your Child</string>
+</resources>

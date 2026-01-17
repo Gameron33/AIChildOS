@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  AI Child Home - Android Manifest
+  This is the home screen launcher for the AI Child OS.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.aichild.home"
+    android:sharedUserId="android.uid.system">
+
+    <!-- System-level permissions -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" />
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+    <uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    
+    <!-- Required for being a launcher -->
+    <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
+    
+    <application
+        android:name=".AIChildApplication"
+        android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:theme="@style/AIChildTheme"
+        android:supportsRtl="true"
+        android:persistent="true"
+        android:allowBackup="true">
+        
+        <!-- Main Launcher Activity -->
+        <activity
+            android:name=".AIChildLauncher"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:stateNotNeeded="true"
+            android:resumeWhilePausing="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/AIChildTheme.Launcher"
+            android:exported="true">
+            
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <!-- Teach Activity -->
+        <activity
+            android:name=".TeachActivity"
+            android:label="Teach AI Child"
+            android:theme="@style/AIChildTheme.Dialog"
+            android:exported="false" />
+        
+        <!-- Memory Activity -->
+        <activity
+            android:name=".MemoryActivity"
+            android:label="AI Child Memory"
+            android:theme="@style/AIChildTheme"
+            android:exported="false" />
+        
+        <!-- Settings Activity -->
+        <activity
+            android:name=".SettingsActivity"
+            android:label="AI Child Settings"
+            android:theme="@style/AIChildTheme"
+            android:exported="false" />
+        
+        <!-- Notification Listener Service -->
+        <service
+            android:name=".AIChildNotificationListener"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+        
+        <!-- Voice Service -->
+        <service
+            android:name=".AIChildVoiceService"
+            android:exported="false" />
+        
+        <!-- Boot Receiver -->
+        <receiver
+            android:name=".BootReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:directBootAware="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        
+        <!-- AI Child Broadcast Receiver -->
+        <receiver
+            android:name=".AIChildReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.aichild.ACTION_TOUCH" />
+                <action android:name="com.aichild.ACTION_SPEECH" />
+                <action android:name="com.aichild.ACTION_TEACH" />
+                <action android:name="com.aichild.ACTION_GREET" />
+                <action android:name="com.aichild.ACTION_UPDATE" />
+                <action android:name="com.aichild.ACTION_WAKEUP" />
+                <action android:name="com.aichild.ACTION_REVIVE" />
+            </intent-filter>
+        </receiver>
+        
+        <!-- Content Provider for AI data -->
+        <provider
+            android:name=".AIChildProvider"
+            android:authorities="com.aichild.provider"
+            android:exported="true"
+            android:grantUriPermissions="true" />
+        
+    </application>
+</manifest>
