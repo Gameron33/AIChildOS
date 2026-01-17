@@ -1,0 +1,74 @@
+name: Build AI Child OS
+
+on:
+  workflow_dispatch:
+    inputs:
+      DEVICE:
+        description: 'Device to build for'
+        required: true
+        default: 'arm64'
+        type: choice
+        options:
+          - arm64
+          - x86_64
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+
+    steps:
+    - name: Checkout AI Child OS
+      uses: actions/checkout@v4
+
+    - name: Setup Build Environment
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y bc bison build-essential ccache curl flex \
+          g++-multilib gcc-multilib git git-lfs gnupg gperf imagemagick \
+          lib32ncurses5-dev lib32readline-dev lib32z1-dev liblz4-tool \
+          libncurses5 libncurses5-dev libsdl1.2-dev libssl-dev \
+          libxml2 libxml2-utils lzop pngcrush rsync schedtool \
+          squashfs-tools xsltproc zip zlib1g-dev python3 python-is-python3 \
+          repo openjdk-17-jdk
+
+    - name: Configure Git
+      run: |
+        git config --global user.email "aichild@build.local"
+        git config --global user.name "AI Child Builder"
+        git lfs install
+
+    - name: Initialize AOSP
+      run: |
+        mkdir -p ~/android/aosp
+        cd ~/android/aosp
+        repo init -u https://android.googlesource.com/platform/manifest -b android-14.0.0_r1 --depth=1
+        
+    - name: Sync AOSP (Minimal)
+      run: |
+        cd ~/android/aosp
+        repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
+
+    - name: Copy AI Child Files
+      run: |
+        # Copy framework services
+        mkdir -p ~/android/aosp/frameworks/base/services/core/java/com/android/server/aichild
+        cp -r frameworks/base/services/core/java/com/android/server/aichild/* \
+          ~/android/aosp/frameworks/base/services/core/java/com/android/server/aichild/
+        
+        # Copy launcher app
+        cp -r packages/apps/AIChildHome ~/android/aosp/packages/apps/
+
+    - name: Build ROM
+      run: |
+        cd ~/android/aosp
+        source build/envsetup.sh
+        lunch sdk_phone64_${{ github.event.inputs.DEVICE }}-userdebug
+        make -j$(nproc --all)
+
+    - name: Upload ROM
+      uses: actions/upload-artifact@v4
+      with:
+        name: AIChildOS-${{ github.event.inputs.DEVICE }}
+        path: ~/android/aosp/out/target/product/*/system.img
+        retention-days: 7
