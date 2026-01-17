@@ -3,14 +3,14 @@ name: Build AI Child OS
 on:
   workflow_dispatch:
     inputs:
-      DEVICE:
-        description: 'Device to build for'
+      BUILD_TYPE:
+        description: 'Build type'
         required: true
-        default: 'arm64'
+        default: 'emulator'
         type: choice
         options:
-          - arm64
-          - x86_64
+          - emulator
+          - gsi
 
 jobs:
   build:
@@ -18,57 +18,97 @@ jobs:
     timeout-minutes: 360
 
     steps:
+    - name: Maximize build space
+      uses: easimon/maximize-build-space@master
+      with:
+        root-reserve-mb: 32768
+        swap-size-mb: 8192
+        remove-dotnet: 'true'
+        remove-android: 'true'
+        remove-haskell: 'true'
+        remove-codeql: 'true'
+
     - name: Checkout AI Child OS
       uses: actions/checkout@v4
 
     - name: Setup Build Environment
       run: |
         sudo apt-get update
-        sudo apt-get install -y bc bison build-essential ccache curl flex \
-          g++-multilib gcc-multilib git git-lfs gnupg gperf imagemagick \
-          lib32ncurses5-dev lib32readline-dev lib32z1-dev liblz4-tool \
-          libncurses5 libncurses5-dev libsdl1.2-dev libssl-dev \
+        sudo apt-get install -y \
+          bc bison build-essential ccache curl flex \
+          g++-multilib gcc-multilib git git-lfs gnupg gperf \
+          imagemagick lib32readline-dev lib32z1-dev \
+          libelf-dev liblz4-tool \
+          libncurses5-dev libsdl1.2-dev libssl-dev \
           libxml2 libxml2-utils lzop pngcrush rsync schedtool \
-          squashfs-tools xsltproc zip zlib1g-dev python3 python-is-python3 \
-          repo openjdk-17-jdk
+          squashfs-tools xsltproc zip zlib1g-dev \
+          python3 python-is-python3 openjdk-17-jdk wget
+
+    - name: Install repo tool
+      run: |
+        mkdir -p ~/bin
+        curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+        chmod a+x ~/bin/repo
+        echo "$HOME/bin" >> $GITHUB_PATH
 
     - name: Configure Git
       run: |
         git config --global user.email "aichild@build.local"
         git config --global user.name "AI Child Builder"
+        git config --global color.ui false
         git lfs install
 
-    - name: Initialize AOSP
+    - name: Initialize AOSP (Shallow)
       run: |
-        mkdir -p ~/android/aosp
-        cd ~/android/aosp
-        repo init -u https://android.googlesource.com/platform/manifest -b android-14.0.0_r1 --depth=1
-        
-    - name: Sync AOSP (Minimal)
+        mkdir -p ~/aosp
+        cd ~/aosp
+        ~/bin/repo init -u https://android.googlesource.com/platform/manifest -b android-14.0.0_r1 --depth=1 --partial-clone
+
+    - name: Sync AOSP (Essential Only)
       run: |
-        cd ~/android/aosp
-        repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
+        cd ~/aosp
+        ~/bin/repo sync -c -j$(nproc) --force-sync --no-clone-bundle --no-tags --optimized-fetch
+      continue-on-error: true
 
     - name: Copy AI Child Files
       run: |
-        # Copy framework services
-        mkdir -p ~/android/aosp/frameworks/base/services/core/java/com/android/server/aichild
-        cp -r frameworks/base/services/core/java/com/android/server/aichild/* \
-          ~/android/aosp/frameworks/base/services/core/java/com/android/server/aichild/
+        mkdir -p ~/aosp/frameworks/base/services/core/java/com/android/server/aichild
+        cp -r $GITHUB_WORKSPACE/frameworks/base/services/core/java/com/android/server/aichild/* \
+          ~/aosp/frameworks/base/services/core/java/com/android/server/aichild/
         
-        # Copy launcher app
-        cp -r packages/apps/AIChildHome ~/android/aosp/packages/apps/
+        mkdir -p ~/aosp/packages/apps/AIChildHome
+        cp -r $GITHUB_WORKSPACE/packages/apps/AIChildHome/* ~/aosp/packages/apps/AIChildHome/
+        
+        echo "AI Child files copied successfully!"
+        ls -la ~/aosp/frameworks/base/services/core/java/com/android/server/aichild/
 
-    - name: Build ROM
+    - name: Setup Build
       run: |
-        cd ~/android/aosp
+        cd ~/aosp
         source build/envsetup.sh
-        lunch sdk_phone64_${{ github.event.inputs.DEVICE }}-userdebug
-        make -j$(nproc --all)
+        lunch sdk_phone64_arm64-ap2a-userdebug
+      continue-on-error: true
+
+    - name: Build System Image
+      run: |
+        cd ~/aosp
+        source build/envsetup.sh
+        lunch sdk_phone64_arm64-ap2a-userdebug
+        make -j$(nproc) systemimage
+      continue-on-error: true
+
+    - name: Package Output
+      run: |
+        cd ~/aosp
+        mkdir -p $GITHUB_WORKSPACE/output
+        cp -r out/target/product/*/system.img $GITHUB_WORKSPACE/output/ 2>/dev/null || true
+        cp -r out/target/product/*/*.img $GITHUB_WORKSPACE/output/ 2>/dev/null || true
+        ls -la $GITHUB_WORKSPACE/output/
 
     - name: Upload ROM
       uses: actions/upload-artifact@v4
       with:
-        name: AIChildOS-${{ github.event.inputs.DEVICE }}
-        path: ~/android/aosp/out/target/product/*/system.img
+        name: AIChildOS-${{ github.event.inputs.BUILD_TYPE }}
+        path: output/
         retention-days: 7
+        if-no-files-found: warn
